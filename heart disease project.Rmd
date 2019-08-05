@@ -121,23 +121,23 @@ xtabs(~ .fitted + sex, data=augment(logistic_sex))
 ```
 
 ```{r}
-logistic <- glm(hd ~ ., data=heart_disease, family="binomial")
-tidy(logistic)
+logistic_hd <- glm(hd ~ ., data=heart_disease, family="binomial")
+tidy(logistic_hd)
  
 ## Now calculate the overall "Pseudo R-squared" and its p-value
-ll_null <- logistic$null.deviance/-2
-ll_proposed <- logistic$deviance/-2
+ll_null <- logistic_hd$null.deviance/-2
+ll_proposed <- logistic_hd$deviance/-2
  
 ## McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
 (ll_null - ll_proposed) / ll_null
  
 ## The p-value for the R^2
-1 - pchisq(2*(ll_proposed - ll_null), df = (length(logistic$coefficients)-1))
+1 - pchisq(2*(ll_proposed - ll_null), df = (length(logistic_hd$coefficients)-1))
 
-glance(logistic)
+glance(logistic_hd)
 
 ## now we can plot the data
-augment(logistic, type.predict = "response") %>% 
+augment(logistic_hd, type.predict = "response") %>% 
   arrange(.fitted) %>% 
   rownames_to_column() %>%
   mutate(rowname = as.integer(rowname)) %>%
