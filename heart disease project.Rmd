@@ -137,7 +137,7 @@ ll_proposed <- logistic_hd$deviance/-2
 glance(logistic_hd)
 
 ## now we can plot the data
-augment(logistic_hd, type.predict = "response") %>% 
+p <- augment(logistic_hd, type.predict = "response") %>% 
   arrange(.fitted) %>% 
   rownames_to_column() %>%
   mutate(rowname = as.integer(rowname)) %>%
@@ -146,7 +146,11 @@ ggplot(aes(x=rowname, y=.fitted)) +
   geom_point(aes(color=hd), alpha=0.8, shape=4, stroke=2) +
   xlab("Index") +
   ylab("Predicted probability of getting heart disease")
- 
+
+
+library(plotly) 
+
+ggplotly(p)
 ggsave("heart_disease_probabilities.pdf")
 
 ```
